@@ -3,7 +3,7 @@
       <div class="container mx-auto px-6 py-2">
           <div class="text-right">
             @can('Post create')
-              <a href="{{route('admin.posts.create')}}" class="bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">New post</a>
+              <a href="{{route('admin.posts.create')}}" class="bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">New Hajira</a>
             @endcan
           </div>
 
@@ -11,8 +11,13 @@
           <table class="text-left w-full border-collapse">
             <thead>
               <tr>
-                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">Title</th>
-                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light w-2/12">Status</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">payment_code</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light w-2/12">paid</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">bank_code</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light w-2/12">account_number</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">account_holder</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light w-2/12">refrence_number</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light w-2/12">amount</th>
                 <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light text-right w-2/12">Actions</th>
               </tr>
             </thead>
@@ -20,14 +25,19 @@
               @can('Post access')
                 @foreach($posts as $post)
                 <tr class="hover:bg-grey-lighter">
-                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->title }}</td>
+                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->payment_code }}</td>
                   <td class="py-4 px-6 border-b border-grey-light">
-                      @if($post->publish)
-                      <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-green-500 rounded-full">Publish</span>
+                      @if($post->paid=="true")
+                      <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-green-500 rounded-full">true</span>
                       @else
-                      <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">Draft</span>
+                      <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">false</span>
                       @endif
                   </td>
+                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->bank_code }}</td>
+                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->account_holder }}</td>
+                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->account_number }}</td>
+                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->refrence_number }}</td>
+                  <td class="py-4 px-6 border-b border-grey-light">{{ $post->amount }}</td>
                   <td class="py-4 px-6 border-b border-grey-light text-right">
 
                     @can('Post edit')

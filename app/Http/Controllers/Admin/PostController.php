@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Auth;
+use Illuminate\Support\Carbon;
+use GuzzleHttp\Client;
 class PostController extends Controller
 {
     /**
@@ -53,7 +55,44 @@ class PostController extends Controller
         $data= $request->all();
         $data['user_id'] = Auth::user()->id;
         $Post = Post::create($data);
-        return redirect()->back()->withSuccess('Post created !!!');
+       // For the Hajira 
+       $currentDate = Carbon::today();
+       $formattedDate = $currentDate->format('m-d-Y');
+       $booleanValue = filter_var($request->paid, FILTER_VALIDATE_BOOLEAN);
+       $client = new Client();
+    try {
+        $response = $client->post('https://ethiohajj.com/api/pilgrim', [
+            'headers' => [
+                'X-Authorization' => 'GViwAFO9tyNVSEhxH5wp43n3BF1f8O4EWzHa5up3KqqzipyrAwpU5F3SYffO851n',
+                'X-Authorization-Secret' => '4ygkMzQb4udXYcpGinCRfYaGK846SWsduGoPGRIY928IUUgySWbjED012qw21hsY',
+            ],
+            'json' => [
+                'date'=>$formattedDate,
+                'payment_code' => $request->payment_code,
+                'bank_code'=>$request->bank_code,
+                'account_holder'=> $request->account_holder,
+                'account_number'=>$request->account_number,
+                'amount'=>$request->amount,
+                'refrence_number'=>$request->refrence_number,
+                'paid'=>true
+            ],
+        ]);
+
+        $statusCode = $response->getStatusCode();
+        $data = $response->getBody()->getContents();
+
+        // Process the response data as needed
+
+
+        $arrayData = json_decode($data, true);
+
+        return view('post.new',['data'=>$arrayData]);
+
+        //return $arrayData['pilgrim']['paid'];
+    } catch (Exception $e) {
+        // Handle any exceptions or errors here
+    }
+        return redirect()->back()->withSuccess('Updated Successfully!!!');
     }
 
     /**
@@ -90,7 +129,6 @@ class PostController extends Controller
         $post->update($request->all());
         return redirect()->back()->withSuccess('Post updated !!!');
     }
-
     /**
      * Remove the specified resource from storage.
      *
